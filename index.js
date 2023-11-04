@@ -19,15 +19,14 @@ mongoose.connect( process.env.CONNECTION_URI, {useNewUrlParser: true, useUnified
 const cors = require('cors');
 app.use(cors());
 
-let auth = require('./auth.js')(app);
-const passport = require('passport');
-require('./passport.js');
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 
+let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport.js');
 
 //set up logging
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'})
@@ -134,8 +133,9 @@ app.post('/users', [
         });
 });
 
-/*app.get('/users/:Username', (req, res) => {
-    Users.findOne({ Username: req.params.Username })
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }),
+    async (req, res) => {
+    await Users.findOne({ Username: req.params.Username })
         .then((user) => {
             res.json(user);
         })
@@ -143,7 +143,7 @@ app.post('/users', [
             console.error(err);
             res.status(500).send('Error: ' + err);
         });
-});*/
+});
 
 app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
 [
