@@ -156,7 +156,7 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }),
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
     }
-    console.log(JSON.stringify(request.body));
+    console.log(JSON.stringify(req.body));
 
     if(req.user.Username !== req.params.Username){
         return res.status(400).send('Permission denied');
