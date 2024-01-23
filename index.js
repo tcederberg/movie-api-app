@@ -216,9 +216,11 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
     await Users.findOneAndRemove({ Username: req.params.Username })
     .then((user) => {
         if (!user) {
+            console.log("error");
             res.status(400).send(req.params.Username + ' was not found ');
         }else {
-            res.status(200).send(req.params.Username + ' was deleted ');
+            console.log("deleted");
+            res.status(200).json(req.params.Username + ' was deleted ');
         }
     })
     .catch((err) => {
@@ -235,7 +237,7 @@ app.use((err, req, res, next)=>{
 });
 
 //listen for requests
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8181;
 app.listen(port, '0.0.0.0',() =>{
     console.log('Listening on Port ' + port);
 });
