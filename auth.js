@@ -13,6 +13,31 @@ let generateJWTToken = (user) => {
     });
 };
 
+/**
+ * @description Login user
+ * @example
+ * Authentication: None
+ * @name POST /login
+ * @example
+ * Request data format
+ * {
+ *  "Username": "",
+ *  "Password": ""
+ * }
+ * @example
+ * Response data format
+ * {
+ *   user: {
+ *     "_id": ObjectID,
+ *     "Username": "",
+ *     "Password": "",
+ *     "Email": "",
+ *     "DOB": "",
+ *     "FavoriteMovies": [ObjectID]
+ *   },
+ *   token: ""
+ * }
+ */
 module.exports = (router) => {
     router.post('/login', (req, res) => {
         passport.authenticate('local', { session: false }, (error, user, info) => {
